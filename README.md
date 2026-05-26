@@ -3,7 +3,7 @@
 A single-addon Home Assistant repository that builds and runs
 [router-for-me/CLIProxyAPI](https://github.com/router-for-me/CLIProxyAPI)
 as an HA addon — an OpenAI- / Claude-compatible HTTP proxy fronted by your
-Claude Code (and other) OAuth subscriptions.
+Claude Code, Codex, Gemini, Grok/xAI, and other OAuth subscriptions.
 
 ## Addons in this repository
 

@@ -4,12 +4,13 @@
 # BUILD_FROM and BUILD_ARCH are injected by the HA addon builder.
 ARG BUILD_FROM
 ARG BUILD_ARCH
-ARG CLIPROXYAPI_VERSION=main
+ARG CLIPROXYAPI_VERSION=v7.1.22
+ARG BUILD_DATE=unknown
 
 # -----------------------------------------------------------------------------
 # Stage 1: build CLIProxyAPI from source.
 # Upstream go.mod currently requires Go >= 1.26.0, so we use the matching
-# toolchain image. CLIPROXYAPI_VERSION selects a branch or tag to clone.
+# toolchain image. CLIPROXYAPI_VERSION selects the upstream release tag to clone.
 # BUILD_ARCH (aarch64 / armv7 / amd64) is mapped to GOARCH/GOARM below.
 # Global ARGs go out of scope at FROM, so we re-declare the ones we need.
 # -----------------------------------------------------------------------------
@@ -17,6 +18,7 @@ FROM golang:1.26-alpine AS builder
 
 ARG CLIPROXYAPI_VERSION
 ARG BUILD_ARCH
+ARG BUILD_DATE
 
 RUN apk add --no-cache git ca-certificates
 
@@ -33,7 +35,7 @@ RUN case "${BUILD_ARCH}" in \
     esac && \
     export GOARCH GOARM && \
     CGO_ENABLED=0 GOOS=linux go build \
-      -ldflags="-s -w -X 'main.Version=${CLIPROXYAPI_VERSION}' -X 'main.Commit=$(cat /src/.commit)'" \
+      -ldflags="-s -w -X 'main.Version=${CLIPROXYAPI_VERSION}' -X 'main.Commit=$(cat /src/.commit)' -X 'main.BuildDate=${BUILD_DATE}'" \
       -o /out/CLIProxyAPI \
       ./cmd/server/
 
