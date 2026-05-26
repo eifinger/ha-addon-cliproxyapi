@@ -18,6 +18,7 @@ cat <<'BANNER'
    gemini-login        Google OAuth (callback to localhost; see README)
    antigravity-login   Antigravity OAuth
    kimi-login          Kimi OAuth
+   xai-login           xAI / Grok OAuth
    list-auths          show token files in the auth dir
    edit-config         vi the runtime config
    restart-api         bounce the CLIProxyAPI server

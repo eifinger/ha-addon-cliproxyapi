@@ -1,9 +1,10 @@
 name: CLIProxyAPI
-version: "0.2.1"
+version: "0.2.2"
 slug: cliproxyapi
 description: >-
   Wraps router-for-me/CLIProxyAPI as a Home Assistant addon. Exposes an
-  OpenAI/Claude-compatible HTTP API on port 8317, with an in-addon web
+  OpenAI/Claude-compatible HTTP API on port 8317 for Claude, Codex, Gemini,
+  Grok/xAI, and other providers, with an in-addon web
   terminal (HA ingress) for OAuth bootstrap.
 url: "https://github.com/router-for-me/CLIProxyAPI"
 arch:

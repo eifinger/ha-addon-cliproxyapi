@@ -2,7 +2,7 @@
 
 A Home Assistant addon that wraps
 [router-for-me/CLIProxyAPI](https://github.com/router-for-me/CLIProxyAPI),
-exposing your Claude Code OAuth subscription (and other supported providers)
+exposing your Claude Code, Codex, Gemini, Grok/xAI, and other OAuth providers
 as an OpenAI- and Claude-compatible HTTP API on `http://<ha-ip>:8317`.
 
 Tested target: Home Assistant Yellow (CM4, aarch64). The build also produces
@@ -11,8 +11,8 @@ images for `armv7` and `amd64`.
 ## What this addon does
 
 CLIProxyAPI lets local clients (Open WebUI, Cline, Continue, LibreChat, custom
-scripts, etc.) talk to your Claude Code / Codex / Gemini / Antigravity OAuth
-sessions through standard OpenAI- or Anthropic-shaped HTTP endpoints. The
+scripts, etc.) talk to your Claude Code / Codex / Gemini / Antigravity / xAI
+OAuth sessions through standard OpenAI- or Anthropic-shaped HTTP endpoints. The
 addon runs the server alongside Home Assistant, persisting OAuth tokens and
 config under `/config/cliproxyapi/`.
 
@@ -32,8 +32,9 @@ local CLIProxyAPI install required.
    default config and an empty auth dir, and logs a warning telling you to
    bootstrap OAuth.
 
-To pin a specific upstream version, change the `CLIPROXYAPI_VERSION` default
-in [Dockerfile](Dockerfile) (default: `main`) before installing.
+This add-on release builds upstream CLIProxyAPI `v7.1.22` by default. To pin a
+different upstream version, change the `CLIPROXYAPI_VERSION` default in
+[Dockerfile](Dockerfile) before installing.
 
 ## First-time setup: OAuth via the in-addon web terminal
 
@@ -51,6 +52,7 @@ in [Dockerfile](Dockerfile) (default: `main`) before installing.
    | `gemini-login`      | Google / Gemini — OAuth (see Gemini caveat)      |
    | `antigravity-login` | Antigravity (Google) — OAuth                     |
    | `kimi-login`        | Kimi (Moonshot) — OAuth                          |
+   | `xai-login`         | xAI / Grok — OAuth                               |
 
 3. The CLI prints a URL. Open it on any device with a browser, sign in,
    complete the consent prompt, then either copy the displayed code back into
@@ -138,7 +140,7 @@ re-doing the OAuth dance for every provider.
 
 ## Updating CLIProxyAPI
 
-The upstream version is pinned by `ARG CLIPROXYAPI_VERSION=main` in
+The upstream version is pinned by `ARG CLIPROXYAPI_VERSION=v7.1.22` in
 [Dockerfile](Dockerfile). To upgrade:
 
 1. Edit `Dockerfile`, change the `CLIPROXYAPI_VERSION` default to the tag or
