@@ -28,4 +28,4 @@ Claude Code, Codex, Gemini, Grok/xAI, and other OAuth subscriptions.
    updates**. The addon shows up under "Local add-ons".
 
 Tested target: Home Assistant Yellow (CM4, `aarch64`). The build also targets
-`armv7` and `amd64`.
+`amd64`.
