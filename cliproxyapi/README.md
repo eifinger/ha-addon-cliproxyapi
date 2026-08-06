@@ -32,7 +32,7 @@ local CLIProxyAPI install required.
    default config and an empty auth dir, and logs a warning telling you to
    bootstrap OAuth.
 
-This add-on release builds upstream CLIProxyAPI `v7.1.22` by default. To pin a
+This add-on release builds upstream CLIProxyAPI `v7.2.120` by default. To pin a
 different upstream version, change the `CLIPROXYAPI_VERSION` default in
 [Dockerfile](Dockerfile) before installing.
 
@@ -140,7 +140,7 @@ re-doing the OAuth dance for every provider.
 
 ## Updating CLIProxyAPI
 
-The upstream version is pinned by `ARG CLIPROXYAPI_VERSION=v7.1.22` in
+The upstream version is pinned by `ARG CLIPROXYAPI_VERSION=v7.2.120` in
 [Dockerfile](Dockerfile). To upgrade:
 
 1. Edit `Dockerfile`, change the `CLIPROXYAPI_VERSION` default to the tag or
