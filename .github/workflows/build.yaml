@@ -1,0 +1,103 @@
+---
+name: Build app images
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/build.yaml"
+      - "cliproxyapi/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/build.yaml"
+      - "cliproxyapi/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint app configuration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Lint app
+        uses: frenck/action-addon-linter@f6bef06a4cee6c67924b0a70be643aacb8500a43 # v2.21.0
+        with:
+          path: ./cliproxyapi
+
+  build:
+    name: Build ${{ matrix.arch }} image
+    needs: lint
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: linux/amd64
+            build_from: ghcr.io/home-assistant/amd64-base:3.19
+          - arch: aarch64
+            platform: linux/arm64
+            build_from: ghcr.io/home-assistant/aarch64-base:3.19
+          - arch: armv7
+            platform: linux/arm/v7
+            build_from: ghcr.io/home-assistant/armv7-base:3.19
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Read app version
+        id: app
+        shell: bash
+        run: |
+          version="$(awk -F '"' '/^version:/ { print $2 }' cliproxyapi/config.yaml)"
+          test -n "${version}"
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish image
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          context: ./cliproxyapi
+          file: ./cliproxyapi/Dockerfile
+          platforms: ${{ matrix.platform }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ghcr.io/eifinger/${{ matrix.arch }}-addon-cliproxyapi:${{ steps.app.outputs.version }}
+            ghcr.io/eifinger/${{ matrix.arch }}-addon-cliproxyapi:latest
+          labels: |
+            io.hass.arch=${{ matrix.arch }}
+            io.hass.type=app
+            io.hass.version=${{ steps.app.outputs.version }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+          build-args: |
+            BUILD_ARCH=${{ matrix.arch }}
+            BUILD_FROM=${{ matrix.build_from }}
+            BUILD_DATE=${{ github.event.repository.updated_at }}
+          cache-from: type=gha,scope=${{ matrix.arch }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.arch }}
