@@ -25,9 +25,8 @@ local CLIProxyAPI install required.
 1. In Home Assistant, **Settings → Add-ons → Add-on Store**, three-dot menu →
    **Repositories**. Add this repo's Git URL, or copy the parent directory
    into `/addons/` and use **Check for updates**.
-2. Open **CLIProxyAPI** and click **Install**. The first build clones and
-   compiles the upstream Go server from source; budget several minutes on a
-   CM4.
+2. Open **CLIProxyAPI** and click **Install**. Home Assistant pulls the
+   pre-built image matching the host architecture from GHCR.
 3. Start the addon. On first boot it creates `/config/cliproxyapi/` with a
    default config and an empty auth dir, and logs a warning telling you to
    bootstrap OAuth.
@@ -147,3 +146,7 @@ The upstream version is pinned by `ARG CLIPROXYAPI_VERSION=v7.2.120` in
    branch you want (e.g. `v7.4.0`).
 2. Bump `version` in [config.yaml](config.yaml) so HA offers a Rebuild.
 3. Rebuild from the addon page.
+
+Pushes to the default branch build and publish images for every supported
+architecture. After publishing a package for the first time, ensure its GHCR
+visibility is set to public so Home Assistant can pull it anonymously.
