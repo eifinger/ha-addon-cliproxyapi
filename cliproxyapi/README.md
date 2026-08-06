@@ -147,8 +147,9 @@ The upstream version is pinned by `ARG CLIPROXYAPI_VERSION=v7.2.120` in
 1. Edit `Dockerfile`, change the `CLIPROXYAPI_VERSION` default to the tag or
    branch you want (e.g. `v7.4.0`).
 2. Bump `version` in [config.yaml](config.yaml) so HA offers a Rebuild.
-3. Rebuild from the addon page.
+3. Merge the change into the default branch so CI publishes the new image.
 
-Pushes to the default branch build and publish images for every supported
-architecture. After publishing a package for the first time, ensure its GHCR
-visibility is set to public so Home Assistant can pull it anonymously.
+Pushes to the default branch build each supported architecture and publish one
+multi-architecture image manifest. After publishing the package for the first
+time, ensure its GHCR visibility is set to public so Home Assistant can pull it
+anonymously.
