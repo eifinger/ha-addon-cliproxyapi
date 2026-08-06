@@ -35,7 +35,7 @@ jobs:
   build:
     name: Build ${{ matrix.arch }} image
     needs: lint
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.runner }}
     permissions:
       contents: read
       packages: write
@@ -44,9 +44,11 @@ jobs:
       matrix:
         include:
           - arch: amd64
+            runner: ubuntu-24.04
             platform: linux/amd64
             build_from: ghcr.io/home-assistant/amd64-base:3.19
           - arch: aarch64
+            runner: ubuntu-24.04-arm
             platform: linux/arm64
             build_from: ghcr.io/home-assistant/aarch64-base:3.19
     steps:
@@ -62,9 +64,6 @@ jobs:
           version="$(awk -F '"' '/^version:/ { print $2 }' cliproxyapi/config.yaml)"
           test -n "${version}"
           echo "version=${version}" >> "${GITHUB_OUTPUT}"
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
