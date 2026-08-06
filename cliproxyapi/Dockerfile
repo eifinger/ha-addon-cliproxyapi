@@ -11,7 +11,7 @@ ARG BUILD_DATE=unknown
 # Stage 1: build CLIProxyAPI from source.
 # Upstream go.mod currently requires Go >= 1.26.0, so we use the matching
 # toolchain image. CLIPROXYAPI_VERSION selects the upstream release tag to clone.
-# BUILD_ARCH (aarch64 / armv7 / amd64) is mapped to GOARCH/GOARM below.
+# BUILD_ARCH (aarch64 / amd64) is mapped to GOARCH below.
 # Global ARGs go out of scope at FROM, so we re-declare the ones we need.
 # -----------------------------------------------------------------------------
 FROM golang:1.26-alpine AS builder
@@ -30,7 +30,6 @@ RUN git clone --depth=1 --branch "${CLIPROXYAPI_VERSION}" \
 RUN case "${BUILD_ARCH}" in \
       aarch64) GOARCH=arm64; GOARM= ;; \
       amd64)   GOARCH=amd64; GOARM= ;; \
-      armv7)   GOARCH=arm;   GOARM=7 ;; \
       *) echo "Unsupported BUILD_ARCH: ${BUILD_ARCH}" >&2; exit 1 ;; \
     esac && \
     export GOARCH GOARM && \

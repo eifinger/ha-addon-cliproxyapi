@@ -6,7 +6,7 @@ exposing your Claude Code, Codex, Gemini, Grok/xAI, and other OAuth providers
 as an OpenAI- and Claude-compatible HTTP API on `http://<ha-ip>:8317`.
 
 Tested target: Home Assistant Yellow (CM4, aarch64). The build also produces
-images for `armv7` and `amd64`.
+images for `amd64`.
 
 ## What this addon does
 
@@ -14,7 +14,9 @@ CLIProxyAPI lets local clients (Open WebUI, Cline, Continue, LibreChat, custom
 scripts, etc.) talk to your Claude Code / Codex / Gemini / Antigravity / xAI
 OAuth sessions through standard OpenAI- or Anthropic-shaped HTTP endpoints. The
 addon runs the server alongside Home Assistant, persisting OAuth tokens and
-config under `/config/cliproxyapi/`.
+config under `/config/cliproxyapi/`. The app-specific configuration directory
+is backed up with the app and does not expose Home Assistant's own configuration
+to the container.
 
 A second process — an `ttyd` web terminal exposed via HA ingress — is the
 recommended way to bootstrap OAuth credentials. No SSH, no Samba copy, no
