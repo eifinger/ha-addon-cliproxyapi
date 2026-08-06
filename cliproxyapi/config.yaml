@@ -1,5 +1,5 @@
 name: CLIProxyAPI
-version: "0.2.5"
+version: "0.2.6"
 slug: cliproxyapi
 description: >-
   Wraps router-for-me/CLIProxyAPI as a Home Assistant addon. Exposes an
@@ -10,7 +10,7 @@ url: "https://github.com/router-for-me/CLIProxyAPI"
 arch:
   - aarch64
   - amd64
-image: "ghcr.io/eifinger/{arch}-addon-cliproxyapi"
+image: "ghcr.io/eifinger/app-cliproxyapi"
 startup: services
 init: false
 ports:
