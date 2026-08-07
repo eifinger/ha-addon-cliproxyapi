@@ -1,5 +1,5 @@
 name: CLIProxyAPI
-version: "0.2.6"
+version: "0.3.0"
 slug: cliproxyapi
 description: >-
   Wraps router-for-me/CLIProxyAPI as a Home Assistant addon. Exposes an
@@ -23,3 +23,7 @@ ingress: true
 ingress_port: 7681
 panel_icon: mdi:console
 panel_title: CLIProxyAPI
+options:
+  api_token: ""
+schema:
+  api_token: password
