@@ -63,16 +63,12 @@ different upstream version, change the `CLIPROXYAPI_VERSION` default in
 4. `list-auths` should now show `*.json` files in
    `/config/cliproxyapi/.cli-proxy-api/`.
 
-5. Before the API is useful you must also set at least one bearer token.
-   In the same terminal:
-   ```
-   edit-config
-   ```
-   replace the `your-api-key-N` placeholders under `api-keys:` with a long,
-   random secret, save, and exit.
+5. Open the app's **Configuration** tab and set **API token** to a long,
+   random secret. The app refuses to start while this required token is empty.
+   On every start it writes the configured value as the sole entry under
+   `api-keys:` in the runtime config.
 
-6. `restart-api`. The CLIProxyAPI service bounces and picks up the new tokens
-   and config. The API is now live on `http://<ha-ip>:8317`.
+6. Restart the app. The API is now live on `http://<ha-ip>:8317`.
 
 ### Gemini OAuth caveat
 
